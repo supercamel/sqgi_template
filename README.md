@@ -8,6 +8,31 @@ SQGI is a small Squirrel runtime for native applications. This template keeps
 the first project shape deliberately simple: one `main.nut`, one
 `sqgipkg.json`, and a GitHub Actions workflow that packages release artifacts.
 
+## The idea
+
+Write your app as a Squirrel script, test it locally with `sqgi`, and let CI
+build the distributable packages.
+
+The usual loop is:
+
+```sh
+sqgi main.nut
+git add .
+git commit -m "Update app"
+git push
+```
+
+When you are ready to ship a release, push a version tag:
+
+```sh
+git tag -a v0.1.0 -m "Release v0.1.0"
+git push origin main
+git push origin v0.1.0
+```
+
+GitHub Actions then builds the Linux and Windows packages from the same source
+you tested locally.
+
 ## Prerequisite
 
 Install SQGI first so the `sqgi` and `sqgipkg` commands are available:
@@ -35,20 +60,49 @@ cd my-sqgi-app
 Then update the app name and application ID in `main.nut`, `sqgipkg.json`, and
 `.github/workflows/release.yml`.
 
-## Run locally
+## Run And Test Locally
 
 ```sh
 sqgi main.nut
 ```
 
-## Package
+For a quick launch-and-exit smoke test:
+
+```sh
+sqgi main.nut --smoke
+```
+
+Before pushing a release, ask `sqgipkg` to check the project shape:
 
 ```sh
 sqgipkg --doctor
+```
+
+You can also build a local Linux AppImage:
+
+```sh
 sqgipkg --target appimage --appimage-arch x86_64
 ```
 
-The GitHub Actions workflow builds Linux x86_64 and aarch64 AppImages plus a
-Windows NSIS installer. It checks out
+## GitHub Actions Release Builds
+
+The workflow in `.github/workflows/release.yml` is the release builder. It
+checks out this app, checks out
 [github.com/supercamel/sqgi](https://github.com/supercamel/sqgi) during the
-build so CI uses the upstream runtime and `sqgipkg` tooling.
+build, builds the upstream runtime and `sqgipkg`, then packages this project.
+
+It runs when you:
+
+- push to `main`, which creates downloadable workflow artifacts;
+- push a tag like `v0.1.0`, which creates the same artifacts and publishes them
+  to a GitHub Release.
+
+The workflow builds:
+
+- Linux x86_64 AppImage
+- Linux aarch64 AppImage
+- Windows x86_64 NSIS installer
+
+That means local development only needs the SQGI runtime. You do not need to
+set up cross-compilers, MSYS2, NSIS, or AppImage tooling on your own machine
+just to ship the app.
