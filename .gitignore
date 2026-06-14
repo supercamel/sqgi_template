@@ -1,0 +1,6 @@
+.sqgipkg/
+artifacts/
+build*/
+dist-*/
+*.AppImage
+*.exe

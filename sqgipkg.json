@@ -1,0 +1,81 @@
+{
+  "name": "SqgiTemplate",
+  "entry": "main.nut",
+  "sqgi_source": {
+    "repo": "https://github.com/supercamel/sqgi.git",
+    "ref": "v0.1.6-alpha"
+  },
+  "linux": {
+    "deb": {
+      "download": true,
+      "suite": "jammy",
+      "packages": [
+        "libgtk-4-1",
+        "gir1.2-gtk-4.0",
+        "libglib2.0-0",
+        "libgirepository-1.0-1",
+        "libharfbuzz-gobject0",
+        "dconf-gsettings-backend",
+        "gvfs-libs",
+        "adwaita-icon-theme",
+        "hicolor-icon-theme",
+        "librsvg2-common",
+        "shared-mime-info"
+      ]
+    },
+    "arches": [
+      {
+        "arch": "x86_64",
+        "build_dir": "build-linux-x86_64",
+        "build": [
+          "cmake -E rm -rf \"$SQGI_LINUX_BUILD_DIR\"",
+          "cmake -S \"$SQGI_SOURCE_DIR\" -B \"$SQGI_LINUX_BUILD_DIR\" -G Ninja ${SQGI_LINUX_CMAKE_TOOLCHAIN:+-DCMAKE_TOOLCHAIN_FILE=\"$SQGI_LINUX_CMAKE_TOOLCHAIN\"} -DCMAKE_BUILD_TYPE=Release -DSQ_ENABLE_JIT=ON",
+          "cmake --build \"$SQGI_LINUX_BUILD_DIR\""
+        ]
+      },
+      {
+        "arch": "aarch64",
+        "build_dir": "build-linux-aarch64",
+        "build": [
+          "cmake -E rm -rf \"$SQGI_LINUX_BUILD_DIR\"",
+          "cmake -S \"$SQGI_SOURCE_DIR\" -B \"$SQGI_LINUX_BUILD_DIR\" -G Ninja ${SQGI_LINUX_CMAKE_TOOLCHAIN:+-DCMAKE_TOOLCHAIN_FILE=\"$SQGI_LINUX_CMAKE_TOOLCHAIN\"} -DCMAKE_BUILD_TYPE=Release -DSQ_ENABLE_JIT=ON",
+          "cmake --build \"$SQGI_LINUX_BUILD_DIR\""
+        ]
+      }
+    ]
+  },
+  "windows": {
+    "msys2_prefix": "mingw64",
+    "gdk_backend": "win32",
+    "console": false,
+    "build_dir": "build-windows-x86_64",
+    "build": [
+      "cmake -E rm -rf \"$SQGI_WINDOWS_BUILD_DIR\"",
+      "cmake -S \"$SQGI_SOURCE_DIR\" -B \"$SQGI_WINDOWS_BUILD_DIR\" -G Ninja -DCMAKE_TOOLCHAIN_FILE=\"$SQGI_WIN_CMAKE_TOOLCHAIN\" -DCMAKE_BUILD_TYPE=Release -DSQ_ENABLE_JIT=ON",
+      "cmake --build \"$SQGI_WINDOWS_BUILD_DIR\" --target sqgi sqgi-bin"
+    ],
+    "packages": [
+      "mingw-w64-x86_64-glib2",
+      "mingw-w64-x86_64-gobject-introspection",
+      "mingw-w64-x86_64-gobject-introspection-runtime",
+      "mingw-w64-x86_64-libffi",
+      "mingw-w64-x86_64-cairo",
+      "mingw-w64-x86_64-gtk4",
+      "mingw-w64-x86_64-gdk-pixbuf2",
+      "mingw-w64-x86_64-librsvg",
+      "mingw-w64-x86_64-hicolor-icon-theme",
+      "mingw-w64-x86_64-adwaita-icon-theme",
+      "mingw-w64-x86_64-adwaita-icon-theme-legacy",
+      "mingw-w64-x86_64-gsettings-desktop-schemas"
+    ],
+    "nsis_options": {
+      "installer_name": "SqgiTemplate-Setup.exe",
+      "install_dir": "$LOCALAPPDATA\\Programs\\SqgiTemplate",
+      "request_execution_level": "user",
+      "desktop_shortcut": true,
+      "start_menu_shortcut": true,
+      "start_menu_folder": "SqgiTemplate",
+      "uninstall_registry": true
+    }
+  }
+}
