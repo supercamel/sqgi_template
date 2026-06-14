@@ -66,6 +66,19 @@ Then update the app name and application ID in `main.nut`, `sqgipkg.json`, and
 sqgi main.nut
 ```
 
+The app uses `assets/dev.sam.sqgitemplate.png` as its GTK application icon.
+Ubuntu/GNOME may still show a generic dock icon when the app is launched
+directly from a terminal, because the dock normally matches running apps to an
+installed `.desktop` file. Install a local development desktop entry when you
+want the dock icon to match during local runs:
+
+```sh
+scripts/install-local-desktop-entry.sh
+```
+
+Then launch the app normally, or from your desktop launcher. The packaged
+AppImage includes its own desktop metadata for release builds.
+
 For a quick launch-and-exit smoke test:
 
 ```sh

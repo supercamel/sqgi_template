@@ -6,7 +6,7 @@ local Gdk = import("Gdk", "4.0")
 local Gtk = import("Gtk", "4.0")
 
 const APP_ID = "dev.sam.sqgitemplate"
-const APP_ICON_NAME = "sqgi_icon"
+const APP_ICON_NAME = "dev.sam.sqgitemplate"
 
 function has_arg(name) {
     foreach (arg in vargv) {
@@ -32,7 +32,7 @@ function configure_app_icon() {
         add_icon_search_path(GLib.build_filenamev([resources, "assets"]))
     }
 
-    add_icon_search_path("assets")
+    add_icon_search_path(GLib.build_filenamev([GLib.get_current_dir(), "assets"]))
     Gtk.Window.set_default_icon_name(APP_ICON_NAME)
 }
 
