@@ -79,12 +79,6 @@ scripts/install-local-desktop-entry.sh
 Then launch the app normally, or from your desktop launcher. The packaged
 AppImage includes its own desktop metadata for release builds.
 
-For a quick launch-and-exit smoke test:
-
-```sh
-sqgi main.nut --smoke
-```
-
 Before pushing a release, ask `sqgipkg` to check the project shape:
 
 ```sh
