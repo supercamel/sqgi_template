@@ -5,6 +5,9 @@
     "repo": "https://github.com/supercamel/sqgi.git",
     "ref": "v0.1.6-alpha"
   },
+  "resources": [
+    "assets"
+  ],
   "linux": {
     "deb": {
       "download": true,
@@ -72,6 +75,7 @@
       "installer_name": "SqgiTemplate-Setup.exe",
       "install_dir": "$LOCALAPPDATA\\Programs\\SqgiTemplate",
       "request_execution_level": "user",
+      "icon": "assets/sqgi_icon.ico",
       "desktop_shortcut": true,
       "start_menu_shortcut": true,
       "start_menu_folder": "SqgiTemplate",

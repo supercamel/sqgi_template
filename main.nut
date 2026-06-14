@@ -2,9 +2,11 @@
 
 local GLib = import("GLib")
 local Gio = import("Gio")
+local Gdk = import("Gdk", "4.0")
 local Gtk = import("Gtk", "4.0")
 
 const APP_ID = "dev.sam.sqgitemplate"
+const APP_ICON_NAME = "sqgi_icon"
 
 function has_arg(name) {
     foreach (arg in vargv) {
@@ -16,10 +18,31 @@ function has_arg(name) {
 local smoke = has_arg("--smoke")
 local app = Gtk.Application.new(APP_ID, Gio.ApplicationFlags.flags_none)
 
+function add_icon_search_path(path) {
+    local display = Gdk.Display.get_default()
+    if (display == null) return
+
+    local theme = Gtk.IconTheme.get_for_display(display)
+    theme.add_search_path(path)
+}
+
+function configure_app_icon() {
+    local resources = GLib.getenv("SQGI_APP_RESOURCES")
+    if (resources != null && resources.len() > 0) {
+        add_icon_search_path(GLib.build_filenamev([resources, "assets"]))
+    }
+
+    add_icon_search_path("assets")
+    Gtk.Window.set_default_icon_name(APP_ICON_NAME)
+}
+
 app.connect("activate", function() {
+    configure_app_icon()
+
     local window = Gtk.ApplicationWindow.new(app)
     window.set_title("SQGI Template")
     window.set_default_size(420, 240)
+    window.set_icon_name(APP_ICON_NAME)
 
     local box = Gtk.Box.new(Gtk.Orientation.vertical, 12)
     box.set_margin_top(24)
